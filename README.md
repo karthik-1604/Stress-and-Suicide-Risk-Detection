@@ -1,4 +1,4 @@
- """# MindWatch: Stress and Suicide Risk Detection using NLP
+ ## MindWatch: Stress and Suicide Risk Detection using NLP
 
 ## Overview
 **MindWatch** is a research project aimed at detecting early indicators of stress and suicide risk in social media posts using **Natural Language Processing (NLP)** and **sentiment analysis**.  
