@@ -65,12 +65,7 @@ The model achieved **Accuracy = 91.6%** and **Weighted F1 = 0.92** on the Dreadd
 - Metrics: Accuracy, macro/weighted F1, precision, recall  
 - Evaluation: Performed using sklearn metrics and confusion matrix  
 
----
 
-## Future Work
-- Extend to transformer-based models (e.g., BERT, RoBERTa) for deeper contextual understanding.  
-- Incorporate temporal patterns and topic modeling.  
-- Collaborate with healthcare researchers for ethical, clinically validated deployment.
 
 ---
 
