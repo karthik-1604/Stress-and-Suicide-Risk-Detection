@@ -41,19 +41,19 @@ Both tasks are benchmarked against a TextBlob sentiment baseline and a fine-tune
 
 ## Class Distribution
 
-![Class Distribution](class_distribution.png)
+![Class Distribution](images/class_distribution.png)
 
-![Text Length Distribution](text_length.png)
+![Text Length Distribution](images/text_length.png)
 
 ---
 
 ## Training Curves
 
 ### Stress Detection
-![Stress Training](stress_training.png)
+![Stress Training](images/stress_training.png)
 
 ### Suicide Risk Detection
-![Suicide Training](suicide_training.png)
+![Suicide Training](images/suicide_training.png)
 
 ---
 
@@ -69,7 +69,7 @@ Both tasks are benchmarked against a TextBlob sentiment baseline and a fine-tune
 | Accuracy | — | — | 81.43% |
 | AUC-ROC | — | — | 0.8876 |
 
-![Stress Confusion Matrix](stress_cm.png)
+![Stress Confusion Matrix](images/stress_cm.png)
 
 ---
 
@@ -83,13 +83,13 @@ Both tasks are benchmarked against a TextBlob sentiment baseline and a fine-tune
 | Accuracy | — | — | 90.80% |
 | AUC-ROC | — | — | 0.9639 |
 
-![Suicide Confusion Matrix](suicide_cm.png)
+![Suicide Confusion Matrix](images/suicide_cm.png)
 
 ---
 
 ## Baseline vs DistilBERT Comparison
 
-![Comparison](comparison.png)
+![Comparison](images/comparison.png)
 
 | Task | TextBlob Baseline F1 | DistilBERT F1 | Improvement |
 |---|---|---|---|
