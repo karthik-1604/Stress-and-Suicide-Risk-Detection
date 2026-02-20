@@ -1,79 +1,129 @@
- ## MindWatch: Stress and Suicide Risk Detection using NLP
+# MindWatch: Multi-Task Mental Health Risk Detection using NLP
+
+A research project for detecting stress and suicide risk in Reddit posts using fine-tuned DistilBERT, evaluated across two benchmark datasets.
+
+---
 
 ## Overview
-**MindWatch** is a research project aimed at detecting early indicators of stress and suicide risk in social media posts using **Natural Language Processing (NLP)** and **sentiment analysis**.  
-Using the **Dreaddit: Stress Analysis in Social Media** dataset (based on Reddit posts), this project explores how textual sentiment and linguistic cues can help understand users’ psychological states.
 
-> *Disclaimer:* This project is for **research and educational purposes only**. It is **not a diagnostic or clinical tool** and should not be used for real-world intervention or mental health decisions.
+Mental health risk detection in social media is a critical NLP challenge. **MindWatch** frames this as a dual-task classification problem:
 
----
+- **Task 1 — Stress Detection:** Classify Reddit posts as stress or non-stress using the Dreaddit dataset
+- **Task 2 — Suicide Risk Detection:** Classify Reddit posts as suicidal or non-suicidal using the Suicidal Ideation Reddit dataset
 
-## Research Objective
-The goal of this project is to:
-- Identify linguistic markers associated with stress and emotional distress.
-- Analyze sentiment patterns and their correlation with stress labels.
-- Evaluate NLP models for classifying stress and suicide-risk related content.
+Both tasks are benchmarked against a TextBlob sentiment baseline and a fine-tuned DistilBERT model.
+
+> **Disclaimer:** This project is for research and educational purposes only. It is not a diagnostic or clinical tool and should not be used for real-world mental health decisions.
 
 ---
 
-## Dataset
-- **Name:** Dreaddit – Stress Analysis in Social Media  
-- **Source:** [Turcan & McKeown, LOUHI 2019](https://aclanthology.org/W19-3009/)  
-- **Samples:** ~4,000 Reddit posts  
-- **Classes:**  
-  - `0`: Non-stress / Low risk  
-  - `1`: Stress / Potential suicide-risk  
+## Datasets
 
-Each sample contains post text and associated subreddit-level metadata.
+| Dataset | Task | Samples | Balance |
+|---|---|---|---|
+| [Dreaddit](https://aclanthology.org/D19-6213/) (Turcan & McKeown, 2019) | Stress Detection | 3,553 | 52% stress / 48% non-stress |
+| [Suicidal Ideation Reddit](https://www.kaggle.com/datasets/rvarun11/suicidal-ideation-reddit-dataset) | Suicide Risk Detection | 12,615 | 52% suicidal / 48% non-suicidal |
 
 ---
 
-##  Methodology
-1. **Data Preprocessing:**  
-   - Removed missing or duplicate entries  
-   - Cleaned text (lowercasing, punctuation removal)  
+## Methodology
 
-2. **Exploratory Data Analysis:**  
-   - Sentiment distribution using **TextBlob**  
-   - Word frequency and **word cloud** visualization  
-   - PCA for feature correlation visualization  
+### Preprocessing
+- Removed null entries and retained only text and label columns
+- Tokenized using DistilBERT tokenizer with max sequence length of 128
+- Stratified 80/10/20 train/validation/test split for both tasks
 
-3. **Modeling:**  
-   - Implemented sentiment-based classification pipeline  
-   - Fine-tuned classifier with optimized thresholds  
-   - Evaluated using Accuracy, Precision, Recall, and F1-score  
+### Models
+- **Baseline:** TextBlob sentiment polarity thresholding (negative polarity → risk)
+- **Proposed:** `distilbert-base-uncased` fine-tuned for sequence classification using HuggingFace Transformers with linear warmup scheduler and AdamW optimizer (lr=2e-5, 3 epochs, batch size=32)
+
+---
+
+## Class Distribution
+
+![Class Distribution](class_distribution.png)
+
+![Text Length Distribution](text_length.png)
+
+---
+
+## Training Curves
+
+### Stress Detection
+![Stress Training](stress_training.png)
+
+### Suicide Risk Detection
+![Suicide Training](suicide_training.png)
 
 ---
 
 ## Results
-| Metric | Class 0 (Non-Stress) | Class 1 (Stress) | Weighted Avg |
-|:--------|:------------------:|:----------------:|:-------------:|
-| **Precision** | 0.89 | 0.93 | - |
-| **Recall** | 0.89 | 0.93 | - |
-| **F1-Score** | 0.89 | 0.93 | **0.92** |
-| **Accuracy** | — | — | **0.916** |
 
-The model achieved **Accuracy = 91.6%** and **Weighted F1 = 0.92** on the Dreaddit dataset, exceeding the best published baselines (≈84–85% F1).  
-*(Evaluation conducted on our experimental split; see Evaluation Protocol below.)*
+### Stress Detection (Dreaddit)
+
+| Metric | Non-Risk | Risk | Weighted Avg |
+|---|---|---|---|
+| Precision | 0.81 | 0.82 | — |
+| Recall | 0.79 | 0.83 | — |
+| F1-Score | 0.80 | 0.82 | 0.8142 |
+| Accuracy | — | — | 81.43% |
+| AUC-ROC | — | — | 0.8876 |
+
+![Stress Confusion Matrix](stress_cm.png)
 
 ---
 
-## Evaluation Protocol
-- Dataset: Dreaddit (Turcan & McKeown, 2019)  
-- Split: Custom 80/20 train-test split 
-- Model: Sentiment-based classification using TextBlob and PCA features  
-- Metrics: Accuracy, macro/weighted F1, precision, recall  
-- Evaluation: Performed using sklearn metrics and confusion matrix  
+### Suicide Risk Detection
 
+| Metric | Non-Risk | Risk | Weighted Avg |
+|---|---|---|---|
+| Precision | 0.95 | 0.88 | — |
+| Recall | 0.85 | 0.96 | — |
+| F1-Score | 0.90 | 0.92 | 0.9076 |
+| Accuracy | — | — | 90.80% |
+| AUC-ROC | — | — | 0.9639 |
 
+![Suicide Confusion Matrix](suicide_cm.png)
+
+---
+
+## Baseline vs DistilBERT Comparison
+
+![Comparison](comparison.png)
+
+| Task | TextBlob Baseline F1 | DistilBERT F1 | Improvement |
+|---|---|---|---|
+| Stress Detection | 0.5947 | 0.8142 | +21.9 pts |
+| Suicide Risk Detection | 0.5866 | 0.9076 | +32.1 pts |
 
 ---
 
 ## Tools and Libraries
-- Python 
-- pandas, numpy  
-- TextBlob  
-- scikit-learn  
-- matplotlib, seaborn, wordcloud  
-- Jupyter Notebook  
 
+- Python, PyTorch, HuggingFace Transformers
+- Scikit-learn, Pandas, NumPy
+- Matplotlib, Seaborn, TextBlob
+- Jupyter Notebook (Kaggle GPU environment)
+
+---
+
+## Evaluation Protocol
+
+- Train/Val/Test split: 80/10/20 stratified
+- Stress test set: 711 samples | Suicide test set: 2,523 samples
+- Metrics: Accuracy, Weighted F1, AUC-ROC, Precision, Recall, Confusion Matrix
+- Hardware: Kaggle GPU (Tesla P100)
+
+---
+
+## Citation
+
+```bibtex
+@inproceedings{turcan-mckeown-2019-dreaddit,
+    title = "Dreaddit: A Reddit Dataset for Stress Analysis in Social Media",
+    author = "Turcan, Elsbeth and McKeown, Kathy",
+    booktitle = "Proceedings of the Tenth International Workshop on Health Text Mining and Information Analysis (LOUHI 2019)",
+    year = "2019",
+    pages = "97--107"
+}
+```
