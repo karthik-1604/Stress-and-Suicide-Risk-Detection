@@ -60,7 +60,7 @@ The model achieved **Accuracy = 91.6%** and **Weighted F1 = 0.92** on the Dreadd
 
 ## Evaluation Protocol
 - Dataset: Dreaddit (Turcan & McKeown, 2019)  
-- Split: Custom 80/20 train-test split (n=143 test samples)  
+- Split: Custom 80/20 train-test split 
 - Model: Sentiment-based classification using TextBlob and PCA features  
 - Metrics: Accuracy, macro/weighted F1, precision, recall  
 - Evaluation: Performed using sklearn metrics and confusion matrix  
